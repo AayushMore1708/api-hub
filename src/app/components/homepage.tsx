@@ -30,14 +30,14 @@ export default function Homepage({ page, repos }: HomepageProps) {
   return (
     <>
       <p className="text-4xl mb-6">API Hub</p>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 w-[70%]">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 w-[70%] ">
         {displayedRepos.map((repo) => (
-          <Card key={repo.id} className="p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+          <Card key={repo.id} className="p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 max-h-[20vh] overflow-y-auto scrollbar-hide ">
             <CardHeader>
               <CardTitle>
-                <a href={repo.html_url} className="text-blue-600 hover:underline">{repo.name}</a>
+                <a href={repo.html_url} className="text-blue-600 hover:underline ">{repo.name}</a>
               </CardTitle>
-              <CardDescription>{repo.description}</CardDescription>
+              <CardDescription className=" text-xs">{repo.description}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex justify-between text-sm text-gray-500">
