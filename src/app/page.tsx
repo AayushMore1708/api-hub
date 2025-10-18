@@ -1,30 +1,43 @@
-import Image from "next/image";
-import Link from "next/link";
-import { getPopularRepos } from "./services/repoService";
+'use client';
 
-export default async function Home({ searchParams }: { searchParams: { page?: string } }) {
-  const page = parseInt(searchParams.page || "1", 10);
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import Homepage from "./components/homepage";
+import { fetchReposFromAPI } from "./services/apiService";
 
-  const repos = await getPopularRepos(page);
+export default function Home() {
+  const searchParams = useSearchParams();
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  const [repos, setRepos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRepos = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchReposFromAPI(page);
+        setRepos(data);
+      } catch (error) {
+        console.error('Error fetching repos:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRepos();
+  }, [page]);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-2 bg-white min-h-screen">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center py-2 bg-black min-h-screen">
-      <p className="text-4xl">API Hub</p>
-      <div>
-        {page > 1 && <Link href={`/?page=${page - 1}`}>Previous</Link>}
-        <Link href={`/?page=${page + 1}`}>Next</Link>
-      </div>
-      <ul>
-        {repos.map((repo: { id: number; html_url: string; name: string; description: string; stargazers_count: number; language: string; owner: { login: string } }) => (
-          <li key={repo.id}>
-            <a href={repo.html_url}>{repo.name}</a>
-            <p>{repo.description}</p>
-            <span>⭐ {repo.stargazers_count}</span>
-            <span>{repo.language}</span>
-            <span>by {repo.owner.login}</span>
-          </li>
-        ))}
-      </ul>
+    <div className="flex flex-col items-center justify-center py-2 bg-white min-h-screen">
+      <Homepage page={page} repos={repos} />
     </div>
   );
 }
