@@ -37,6 +37,8 @@ export default function Homepage({ page, repos }: HomepageProps) {
         loop={true}
         className="text-4xl font-medium"
       />
+        <p className="text-xl mt-20 mb-2 font-semibold">Trending Repos </p>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 w-[70%] ">
         {displayedRepos.map((repo) => (
           <Card key={repo.id} className="p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 max-h-[20vh] overflow-y-auto scrollbar-hide ">
