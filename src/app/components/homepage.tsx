@@ -8,6 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Typewriter } from "@/components/ui/typewriter-text"
+
 
 interface Repo {
   id: number;
@@ -29,7 +31,12 @@ export default function Homepage({ page, repos }: HomepageProps) {
 
   return (
     <>
-      <p className="text-4xl mb-6">API Hub</p>
+      <Typewriter
+        text={["API Hub"]}
+        speed={100}
+        loop={true}
+        className="text-4xl font-medium"
+      />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 w-[70%] ">
         {displayedRepos.map((repo) => (
           <Card key={repo.id} className="p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 max-h-[20vh] overflow-y-auto scrollbar-hide ">
@@ -47,7 +54,7 @@ export default function Homepage({ page, repos }: HomepageProps) {
               <p className="text-sm text-gray-500">by {repo.owner.login}</p>
             </CardContent>
           </Card>
-          
+
         ))}
       </div>
       <div className="flex justify-center gap-4">

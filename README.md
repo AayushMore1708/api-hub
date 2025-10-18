@@ -212,5 +212,5 @@ Built with **Next.js App Router** and **TailwindCSS**, featuring:
 
 
 Testing Commands
-bunx jest __tests__/smoke_test.tsx
-bunx jest PopularRepos.test.tsx
+bunx jest __tests__/apiService.tsx
+bunx jest PopularRepos.api.tsx
