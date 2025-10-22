@@ -36,12 +36,17 @@ export default function Home() {
     fetchRepos();
   }, [page, session]);
 
-  if (loading) {
+  if (status === 'loading' || loading) {
     return (
       <div className="flex flex-col items-center justify-center py-2 bg-white min-h-screen">
         <p>Loading...</p>
       </div>
     );
+  }
+
+  // Don't render anything if not authenticated - AuthButton will show login UI
+  if (!session) {
+    return null;
   }
 
   return (
