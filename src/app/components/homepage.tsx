@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   Card,
   CardAction,
@@ -24,20 +25,26 @@ interface Repo {
 interface HomepageProps {
   page: number;
   repos: Repo[];
+  isLoggedIn: boolean;
+  userImage?: string | null;
 }
 
-export default function Homepage({ page, repos }: HomepageProps) {
+export default function Homepage({ page, repos, isLoggedIn, userImage }: HomepageProps) {
   const displayedRepos = repos.slice(0, 9);
 
   return (
     <>
-      <Typewriter
-        text={["API Hub"]}
-        speed={100}
-        loop={true}
-        className="text-4xl font-medium"
-      />
+      {isLoggedIn && (
+        <Typewriter
+          text={["API Hub"]}
+          speed={100}
+          loop={true}
+          className="text-4xl font-medium"
+        />
+      )}
+      {isLoggedIn && (
         <p className="text-xl mt-20 mb-2 font-semibold">Trending Repos </p>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 w-[70%] ">
         {displayedRepos.map((repo) => (
@@ -61,7 +68,7 @@ export default function Homepage({ page, repos }: HomepageProps) {
       </div>
       <div className="flex justify-center gap-4">
         {page > 1 && <Link href={`/?page=${page - 1}`} className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600">Previous</Link>}
-        <Link href={`/?page=${page + 1}`} className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600">Next</Link>
+        {isLoggedIn && <Link href={`/?page=${page + 1}`} className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600">Next</Link>}
       </div>
     </>
   );

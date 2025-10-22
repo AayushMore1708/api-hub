@@ -1,6 +1,9 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
+import { db } from '@/index';
+import { users } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 export const authOptions = {
   providers: [
@@ -29,6 +32,32 @@ export const authOptions = {
       },
     }),
   ],
+  callbacks: {
+    async signIn({ user, account }) {
+      try {
+        // Check if user already exists
+        const existingUser = await db
+          .select()
+          .from(users)
+          .where(eq(users.email, user.email))
+          .limit(1);
+
+        if (existingUser.length === 0) {
+          // Create new user
+          await db.insert(users).values({
+            username: user.name || '',
+            email: user.email,
+            provider: account?.provider || 'oauth',
+            providerId: account?.providerAccountId || user.id,
+          });
+        }
+        return true;
+      } catch (error) {
+        console.error('Error in signIn callback:', error);
+        return false;
+      }
+    },
+  },
 };
 
 export default NextAuth(authOptions);

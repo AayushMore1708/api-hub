@@ -13,6 +13,7 @@ export default function Home() {
   const page = parseInt(searchParams.get('page') || '1', 10);
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [lastPage, setLastPage] = useState<number | null>(null);
 
   useEffect(() => {
     // Only fetch if user is authenticated
@@ -21,11 +22,17 @@ export default function Home() {
       return;
     }
 
+    // Only fetch if page actually changed
+    if (lastPage === page) {
+      return;
+    }
+
     const fetchRepos = async () => {
       setLoading(true);
       try {
         const data = await fetchReposFromAPI(page);
         setRepos(data);
+        setLastPage(page);
       } catch (error) {
         console.error('Error fetching repos:', error);
       } finally {
@@ -34,7 +41,7 @@ export default function Home() {
     };
 
     fetchRepos();
-  }, [page, session]);
+  }, [page, session, lastPage]);
 
   if (loading) {
     return (
@@ -45,8 +52,13 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center py-2 bg-white overflow-y-auto">
-      <Homepage page={page} repos={repos} />
+       <div className="flex flex-col items-center justify-center py-2 bg-white overflow-y-auto">
+      <Homepage 
+        page={page} 
+        repos={repos} 
+        isLoggedIn={!!session}
+        userImage={session?.user?.image}
+      />
     </div>
   );
 }
