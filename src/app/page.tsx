@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Homepage from "./components/homepage";
+import Homepage from "../components/ui/homepage";
 import { fetchReposFromAPI } from "./services/apiService";
 import { useSession } from 'next-auth/react';
 
