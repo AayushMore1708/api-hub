@@ -10,6 +10,8 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Typewriter } from "@/components/ui/typewriter-text"
+import { useRouter } from "next/navigation";
+
 
 
 interface Repo {
@@ -31,6 +33,7 @@ interface HomepageProps {
 
 export default function Homepage({ page, repos, isLoggedIn, userImage }: HomepageProps) {
   const displayedRepos = repos.slice(0, 9);
+  const router = useRouter();
 
   return (
     <>
@@ -43,7 +46,11 @@ export default function Homepage({ page, repos, isLoggedIn, userImage }: Homepag
         />
       )}
       {isLoggedIn && (
-        <p className="text-xl mt-20 mb-2 font-semibold">Trending Repos </p>
+        <div className="flex flex-col justify-center">
+          <p className="text-xl mt-20 mb-2 font-semibold">Trending Repos </p>
+          <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={() => router.push("/search")}>Search</button>
+        </div>
+
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 w-[70%] ">

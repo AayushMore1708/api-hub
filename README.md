@@ -13,6 +13,8 @@ Migrations
 bunx drizzle-kit generate
 bunx drizzle-kit migrate
 
+To embed the db (Seeding)
+bun run src/app/scripts/fetchDocs.ts
 
 
 ### **Search, Understand, and Chat with Any API Documentation — Powered by Gemini and RAG**
