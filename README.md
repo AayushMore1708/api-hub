@@ -1,5 +1,20 @@
 # **API Hub**
 
+Testing Commands
+bunx jest __tests__/apiService.tsx
+bunx jest PopularRepos.api.tsx
+
+DB Commands :
+
+To push the changes to schema
+bunx drizzle-kit push
+
+Migrations
+bunx drizzle-kit generate
+bunx drizzle-kit migrate
+
+
+
 ### **Search, Understand, and Chat with Any API Documentation — Powered by Gemini and RAG**
 
 ---
@@ -211,6 +226,3 @@ Built with **Next.js App Router** and **TailwindCSS**, featuring:
 ---
 
 
-Testing Commands
-bunx jest __tests__/apiService.tsx
-bunx jest PopularRepos.api.tsx
