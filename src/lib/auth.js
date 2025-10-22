@@ -32,32 +32,43 @@ export const authOptions = {
       },
     }),
   ],
-  callbacks: {
-    async signIn({ user, account }) {
-      try {
-        // Check if user already exists
-        const existingUser = await db
-          .select()
-          .from(users)
-          .where(eq(users.email, user.email))
-          .limit(1);
 
-        if (existingUser.length === 0) {
-          // Create new user
-          await db.insert(users).values({
-            username: user.name || '',
-            email: user.email,
-            provider: account?.provider || 'oauth',
-            providerId: account?.providerAccountId || user.id,
-          });
+callbacks: {
+  async signIn({ user, account }) {
+    try {
+      const existingUser = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, user.email))
+        .limit(1);
+
+      if (existingUser.length === 0) {
+        await db.insert(users).values({
+          username: user.name || '',
+          email: user.email,
+          provider: account?.provider || 'oauth',
+          providerId: account?.providerAccountId || user.id,
+        });
+      } else {
+        const dbUser = existingUser[0];
+        if (dbUser.provider !== account?.provider) {
+          await db
+            .update(users)
+            .set({
+              provider: account?.provider || dbUser.provider,
+              providerId: account?.providerAccountId || dbUser.providerId,
+            })
+            .where(eq(users.email, user.email));
         }
-        return true;
-      } catch (error) {
-        console.error('Error in signIn callback:', error);
-        return false;
       }
-    },
+      return true;
+    } catch (error) {
+      console.error('Error in signIn callback:', error);
+      return false;
+    }
   },
+}
+
 };
 
 export default NextAuth(authOptions);

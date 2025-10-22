@@ -3,67 +3,64 @@
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
-
 export default function AuthButton() {
   const { data: session, status } = useSession();
   const [profileImage, setProfileImage] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchProfileImage = async () => {
-      if (session) {
-        try {
-          const response = await fetch('/api/profile');
-          const data = await response.json();
-          setProfileImage(data.image);
-        } catch (error) {
-          console.error('Error fetching profile image:', error);
-          setProfileImage('/default-avatar.png');
-        }
-      } else {
-        setProfileImage(null);
+      if (status !== 'authenticated') return;
+
+      try {
+        const response = await fetch('/api/profile');
+        const data = await response.json();
+        setProfileImage(data.image);
+      } catch (error) {
+        console.error('Error fetching profile image:', error);
+        setProfileImage('/default-avatar.png');
       }
     };
 
     fetchProfileImage();
-  }, [session]);
-  if (status === 'loading') {
-    return null;
-  }
+  }, [status]);
+
+  if (status === 'loading') return null;
 
   if (session) {
+    const imgSrc = profileImage || session.user?.image || '/default-avatar.png';
     return (
       <div className="fixed top-4 right-4 flex items-center gap-3 z-50">
-        <div className='flex flex-col justify-center items-center gap-2'>
+        <div className="flex flex-col justify-center items-center gap-2">
           <div className="flex items-center gap-3">
-          <img
-            src={profileImage || '/default-avatar.png'}
-            alt="Profile"
-            className="w-10 h-10 rounded-full"
-            onError={(e) => { e.currentTarget.src = '/default-avatar.png'; }}
-          />
-               <button
-          onClick={() => signOut()}
-          className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors shadow-lg"
-          title="Sign Out"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+            <img
+              src={imgSrc}
+              alt="Profile"
+              className="w-10 h-10 rounded-full"
+              onError={(e) => { e.currentTarget.src = '/default-avatar.png'; }}
             />
-          </svg>
-        </button>
-        </div>
+            <button
+              onClick={() => signOut()}
+              className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors shadow-lg"
+              title="Sign Out"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                />
+              </svg>
+            </button>
+          </div>
           <span className="text-sm text-gray-700">Welcome, {session.user?.name}!</span>
         </div>
-   
       </div>
     );
   }
