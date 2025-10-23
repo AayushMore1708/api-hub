@@ -21,14 +21,14 @@ const OFFICIAL_SPECS: Record<string, string[]> = {
   stripe: [
     "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.yaml",
   ],
-  notion: [
-    "https://raw.githubusercontent.com/notionhq/notion-openapi/main/notion-openapi.yaml",
-  ],
   openai: [
     "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
   ],
   github: [
     "https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.yaml",
+  ],
+  twilio: [
+    "https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/yaml/twilio_api_v2010.yaml",
   ],
 };
 
