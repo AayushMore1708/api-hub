@@ -44,16 +44,25 @@ export default function Homepage({ page, repos, isLoggedIn, userImage }: Homepag
           loop={true}
           className="text-4xl font-medium"
         />
+
       )}
       {isLoggedIn && (
         <div className="flex flex-col justify-center">
-          <p className="text-xl mt-20 mb-2 font-semibold">Trending Repos </p>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={() => router.push("/search")}>Search</button>
+          <p className="text-xl mt-10 mb-2 font-semibold">Trending Repos </p>
+          <button className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded mb-2 " onClick={() => router.push("/search")}>Search
+            <Typewriter
+              text={["..."]}
+              speed={100}
+              loop={true}
+              cursor=""
+              className="text-xl font-small"
+            />
+          </button>
         </div>
 
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 w-[70%] ">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 w-[70%]">
         {displayedRepos.map((repo) => (
           <Card key={repo.id} className="p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 max-h-[20vh] overflow-y-auto scrollbar-hide ">
             <CardHeader>

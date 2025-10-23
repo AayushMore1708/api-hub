@@ -10,17 +10,14 @@ export async function POST(req: Request) {
   try {
     const { query } = await req.json();
 
-    // 🧭 Step 1: Get top 5 most relevant API docs (semantic search)
     const results = await db.execute(sql`
       SELECT content
       FROM api_docs
       WHERE content ILIKE ${"%" + query + "%"}
-      LIMIT 5
     `);
 
     const context = results.rows.map((r) => r.content).join("\n\n");
 
-    // 🧠 Step 2: Build formatted prompt
     const prompt = `
 You are an expert API documentation assistant.
 Using the following API documentation context, answer the user's query **clearly** and **comprehensively**.
@@ -30,8 +27,9 @@ Rules for formatting:
 - Use bullet points (*) for lists.
 - Use backticks (\`) for code paths and parameters.
 - Always group endpoints by functionality if possible.
-- Keep explanations concise but structured.
-
+- Keep explanations concise but structured with examples
+- Dont give like this Here is a comprehensive overview of the Stripe-related API endpoints based on the provided documentation:
+just give proper endpoints and description and keep proper spacing and line breaks with numbered bullets
 ---
 **Context:**
 ${context}
@@ -42,7 +40,6 @@ ${context}
     const result = await model.generateContent(prompt);
     const text = result.response.text();
 
-    // 🧾 Step 3: Return markdown-formatted response
     return NextResponse.json({ answer: text });
   } catch (error) {
     console.error(error);
