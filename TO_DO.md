@@ -20,8 +20,9 @@ A basic project with the following technologies :
 
 
 OAuth Integrations
-
+Google Oauth
+Github OAuth
 
 Api Key Integrations
-Google Custom Search API
+Google Custom Search API - Done
 

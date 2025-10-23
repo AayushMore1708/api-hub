@@ -30,9 +30,9 @@ export default function AuthButton() {
   if (session) {
     const imgSrc = profileImage || session.user?.image || '/default-avatar.png';
     return (
-      <div className="fixed top-4 right-4 flex items-center gap-3 z-50 bg-white rounded-lg shadow-md p-2">
+      <div className="fixed top-4 right-4 flex items-center gap-3 z-50 bg-white rounded-lg shadow-md p-2 select-none">
         <div className="flex flex-col justify-center items-center gap-2">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 ">
             <img
               src={imgSrc}
               alt="Profile"
@@ -60,7 +60,7 @@ export default function AuthButton() {
               </svg>
             </button>
           </div>
-          <span className=" text-sm text-gray-700">Welcome, {session.user?.name}!</span>
+          <span className="text-sm text-gray-700">Welcome, {session.user?.name}!</span>
         </div>
       </div>
     );

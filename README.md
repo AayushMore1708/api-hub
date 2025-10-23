@@ -14,7 +14,16 @@ bunx drizzle-kit generate
 bunx drizzle-kit migrate
 
 To embed the db (Seeding)
-bun run src/app/scripts/fetchDocs.ts
+bun run fetch-docs
+
+# Quick mode (first 50 chunks only - for testing)
+bun run fetch-docs -- --quick
+
+# Fetch specific library only
+bun run fetch-docs -- stripe
+bun run fetch-docs -- notion
+bun run fetch-docs -- openai
+bun run fetch-docs -- github
 
 
 ### **Search, Understand, and Chat with Any API Documentation — Powered by Gemini and RAG**

@@ -93,7 +93,7 @@ export default function Search() {
                   : "bg-blue-600 hover:bg-blue-700"
                 }`}
             >
-              {loading ? "Searching..." : "Search with Gemini"}
+              {loading ? "Searching..." : "Search"}
             </button>
           </form>
 

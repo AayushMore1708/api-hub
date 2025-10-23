@@ -9,7 +9,8 @@
     "lint": "biome check",
     "format": "biome format --write",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "fetch-docs": "bun run src/app/scripts/fetchDocs.ts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.0",
