@@ -1,31 +1,4 @@
 # **API Hub**
-
-Testing Commands
-bunx jest __tests__/apiService.tsx
-bunx jest PopularRepos.api.tsx
-
-DB Commands :
-
-To push the changes to schema
-bunx drizzle-kit push
-
-Migrations
-bunx drizzle-kit generate
-bunx drizzle-kit migrate
-
-To embed the db (Seeding)
-bun run fetch-docs
-
-# Quick mode (first 50 chunks only - for testing)
-bun run fetch-docs -- --quick
-
-# Fetch specific library only
-bun run fetch-docs -- stripe
-bun run fetch-docs -- notion
-bun run fetch-docs -- openai
-bun run fetch-docs -- github
-
-
 ### **Search, Understand, and Chat with Any API Documentation — Powered by Gemini and RAG**
 
 ---
@@ -166,3 +139,29 @@ The project follows **Test-Driven Development (TDD)** using:
 * ESLint + Prettier – code quality and linting
 
 ---
+
+
+Testing Commands
+bunx jest __tests__/apiService.tsx
+bunx jest PopularRepos.api.tsx
+
+DB Commands :
+
+To push the changes to schema
+bunx drizzle-kit push
+
+Migrations
+bunx drizzle-kit generate
+bunx drizzle-kit migrate
+
+To embed the db (Seeding)
+bun run fetch-docs
+
+# Quick mode (first 50 chunks only - for testing)
+bun run fetch-docs -- --quick
+
+# Fetch specific library only
+bun run fetch-docs -- stripe
+bun run fetch-docs -- notion
+bun run fetch-docs -- openai
+bun run fetch-docs -- github
