@@ -144,6 +144,7 @@ The project follows **Test-Driven Development (TDD)** using:
 Testing Commands
 bunx jest __tests__/apiService.tsx
 bunx jest PopularRepos.api.tsx
+bunx jest googleCustomSearch.test.ts
 
 DB Commands :
 

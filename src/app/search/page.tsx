@@ -250,7 +250,7 @@ export default function Search() {
 
           {hasSearched && (
             <div className="mt-8 w-full h-[calc(100vh-300px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-6">
+              <div className=" lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-6">
                 {/* API Endpoints Card */}
                 {(loading || endpoints.length > 0 || answer) && (
                   <div className="lg:col-span-1 text-left bg-[#0f0f0f]/80 p-6 rounded-lg border border-gray-800 shadow-xl backdrop-blur-md">
