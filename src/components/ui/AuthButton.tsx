@@ -1,41 +1,33 @@
 'use client';
 
 import { useSession, signIn, signOut } from 'next-auth/react';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 
 export default function AuthButton() {
   const { data: session, status } = useSession();
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const imgSrc = session?.user?.image || '/default-avatar.png';
+  const [showWelcome, setShowWelcome] = useState(true);
 
   useEffect(() => {
-    const fetchProfileImage = async () => {
-      if (status !== 'authenticated') return;
-
-      try {
-        const response = await fetch('/api/profile');
-        const data = await response.json();
-        setProfileImage(data.image);
-      } catch (error) {
-        console.error('Error fetching profile image:', error);
-        setProfileImage('/default-avatar.png');
-      }
-    };
-
-    fetchProfileImage();
-  }, [status]);
+    setShowWelcome(true);
+    const timer = setTimeout(() => setShowWelcome(false), 5000);
+    return () => clearTimeout(timer);
+  }, [session]);
 
   if (status === 'loading') return null;
 
   if (session) {
-    const imgSrc = profileImage || session.user?.image || '/default-avatar.png';
     return (
       <div className="fixed top-4 right-4 flex items-center gap-3 z-50 bg-white rounded-lg shadow-md p-2 select-none">
         <div className="flex flex-col justify-center items-center gap-2">
           <div className="flex items-center gap-3 ">
-            <img
+            <Image
               src={imgSrc}
               alt="Profile"
+              width={40}
+              height={40}
               className="w-10 h-10 rounded-full"
               onError={(e) => { e.currentTarget.src = '/default-avatar.png'; }}
             />
@@ -60,7 +52,10 @@ export default function AuthButton() {
               </svg>
             </button>
           </div>
-          <span className="text-sm text-gray-700">Welcome, {session.user?.name}!</span>
+          {showWelcome && (
+            <span className="text-sm text-gray-700">Welcome!</span>
+          )}
+          <span className="text-sm text-gray-700">{session.user?.name}</span>
         </div>
       </div>
     );

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Homepage from "../components/ui/homepage";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
 import { fetchReposFromAPI } from "./services/apiService";
 import { useSession } from 'next-auth/react';
 
@@ -17,13 +18,17 @@ export default function Home() {
 
   useEffect(() => {
     // Only fetch if user is authenticated
-    if (!session) {
+    if (status === 'unauthenticated') {
       setLoading(false);
       return;
     }
 
-    // Only fetch if page actually changed
-    if (lastPage === page) {
+    if (status === 'loading') {
+      setLoading(true);
+      return;
+    }
+
+    if (!session || lastPage === page) {
       return;
     }
 
@@ -41,24 +46,18 @@ export default function Home() {
     };
 
     fetchRepos();
-  }, [page, session, lastPage]);
+  }, [page, session, status, lastPage]);
 
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-2 bg-white min-h-screen">
-        <p>Loading...</p>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (
-       <div className="flex flex-col items-center justify-center py-2 bg-white overflow-y-auto">
-      <Homepage 
-        page={page} 
-        repos={repos} 
-        isLoggedIn={!!session}
-        userImage={session?.user?.image}
-      />
-    </div>
+    <Homepage 
+      page={page} 
+      repos={repos} 
+      isLoggedIn={!!session}
+      userImage={session?.user?.image}
+    />
   );
 }

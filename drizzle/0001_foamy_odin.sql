@@ -1,0 +1,1 @@
+ALTER TABLE "api_docs" ALTER COLUMN "vector" SET DATA TYPE vector(768);

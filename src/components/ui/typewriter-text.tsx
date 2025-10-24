@@ -49,7 +49,7 @@ export function Typewriter({
           } else {
             setIsDeleting(false);
             setCurrentIndex(0);
-            setTextArrayIndex((prev) => (prev + 1) % textArray.length);
+            setTextArrayIndex(Math.floor(Math.random() * textArray.length));
           }
         }
       },

@@ -36,7 +36,6 @@ async function getEmbedding(text: string): Promise<number[]> {
   embedCache[text] = res.embedding.values;
   return embedCache[text];
 }
-
 // 🔹 Fetch and store docs (runs in background)
 async function seedDocs(library: string) {
   try {
@@ -89,6 +88,12 @@ async function seedDocs(library: string) {
     console.error("Seed error:", err);
   }
 }
+function cosineSimilarity(a: number[], b: number[]) {
+  const dot = a.reduce((sum, v, i) => sum + v * b[i], 0);
+  const magA = Math.sqrt(a.reduce((sum, v) => sum + v * v, 0));
+  const magB = Math.sqrt(b.reduce((sum, v) => sum + v * v, 0));
+  return 1 - dot / (magA * magB); // lower = closer
+}
 
 // 🔹 Generate answer fast
 async function generateAnswer(query: string, context: string, library?: string) {
@@ -126,13 +131,17 @@ export async function POST(req: Request) {
     const queryVector = await getEmbedding(query);
 
     // 🚀 Try to fetch similar docs if already seeded
-    const { rows } = await db.execute(sql`
-      SELECT content, (vector <-> ${JSON.stringify(queryVector)}::vector) AS distance
-      FROM api_docs
-      ${foundLibrary ? sql`WHERE library = ${foundLibrary}` : sql``}
-      ORDER BY distance ASC
-      LIMIT 8;
-    `);
+    const allRows = await db.select().from(api_docs)
+      .where(foundLibrary ? sql`library = ${foundLibrary}` : sql`TRUE`);
+
+    const rows = (allRows as any[])
+      .map(r => ({
+        ...r,
+        distance: cosineSimilarity(r.vector, queryVector),
+      }))
+      .sort((a, b) => a.distance - b.distance)
+      .slice(0, 8);
+
 
     // ⚡ Return placeholder if no docs yet
     if (!rows || rows.length === 0) {

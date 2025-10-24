@@ -24,5 +24,13 @@ Google Oauth
 Github OAuth
 
 Api Key Integrations
-Google Custom Search API - Done
+Google Custom Search API - to search on web - Done
+Gemini Api to format the api endpoints
 
+TBD
+Gmail API                   -   send api endpoints pdf via email to anyone
+Hugging Face Inference API  -   mulitple models switch in ui
+postman api                 -   fetch verified OpenAPI collections for new APIs
+
+24/10
+Use N8N free tier, create and connect that flow via API webhooks to project
