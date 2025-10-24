@@ -166,14 +166,14 @@ export default function ApiTestingPage() {
         </button>
         <button
           onClick={() => router.push('/')}
-          className="p-2 bg-gray-800 text-white rounded-md hover:bg-gray-700"
+          className="p-2 bg-blue-800 text-white rounded-md hover:bg-blue-700"
           title="Go to Home"
         >
           Home
         </button>
         <button
           onClick={() => router.push('/api-testing')}
-          className="p-2 bg-gray-800 text-white rounded-md hover:bg-gray-700"
+          className="p-2 bg-blue-800 text-white rounded-md hover:bg-blue-700"
           title="Go to API Tester"
         >
           API Tester

@@ -82,18 +82,18 @@ export default function ApiTestingPage() {
                 </button>
                 <button
                     onClick={() => router.push('/')}
-                    className="p-2 bg-gray-800 text-white rounded-md hover:bg-gray-700"
+                    className="p-2 bg-blue-800 text-white rounded-md hover:bg-blue-700"
                     title="Go to Home"
                 >
                     Home
                 </button>
-                <button
-                    onClick={() => router.push('/postman-collections')}
-                    className="p-2 bg-gray-800 text-white rounded-md hover:bg-gray-700"
-                    title="Go to Postman Collections"
-                >
-                    Postman Collections
-                </button>
+            <button
+                onClick={() => router.push('/postman-collections')}
+                className="p-2 bg-blue-800 text-white rounded-md hover:bg-blue-700"
+                title="Go to Postman Collections"
+            >
+                Postman Collections
+            </button>
             </div>
 
             <h1 className="text-3xl font-bold mb-6 text-purple-400">API Tester</h1>

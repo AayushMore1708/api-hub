@@ -45,6 +45,7 @@ export default function Search() {
     setGoogleLoading(true);
     setGoogleResults([]);
     setGoogleError("");
+    setHasSearched(true); // Add this line to show the results section
 
     try {
       const searchQuery = `${query} api endpoints official`;
@@ -143,12 +144,24 @@ export default function Search() {
 
   return (
     <section className="w-full h-full flex flex-col items-center bg-black text-gray-200">
-      <div className="absolute left-6 top-6 z-50">
+      <div className="absolute left-6 top-6 z-50 flex gap-2">
+        <Link
+          href="/"
+          className="px-4 py-2 bg-gray-800 text-white rounded-md shadow hover:bg-gray-700 transition"
+        >
+          Home
+        </Link>
         <Link
           href="/api-testing"
-          className="px-4 py-2 bg-purple-600 text-white rounded-md shadow hover:bg-purple-700 transition"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 transition"
         >
           API Testing
+        </Link>
+        <Link
+          href="/postman-collections"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 transition"
+        >
+          Postman
         </Link>
       </div>
 
@@ -237,85 +250,94 @@ export default function Search() {
 
           {hasSearched && (
             <div className="mt-8 w-full h-[calc(100vh-300px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-7xl mx-auto px-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-6">
                 {/* API Endpoints Card */}
-                <div className="text-left bg-[#0f0f0f]/80 p-6 rounded-lg border border-gray-800 shadow-xl backdrop-blur-md">
-                  <h2 className="text-2xl font-bold text-purple-400 mb-4">API Endpoints</h2>
+                {(loading || endpoints.length > 0 || answer) && (
+                  <div className="lg:col-span-1 text-left bg-[#0f0f0f]/80 p-6 rounded-lg border border-gray-800 shadow-xl backdrop-blur-md">
+                    <h2 className="text-2xl font-bold text-purple-400 mb-4">API Endpoints</h2>
 
-                  {loading ? (
-                    <p className="text-gray-400 italic">Fetching results...</p>
-                  ) : endpoints.length === 0 ? (
-                    <p className="text-gray-500 italic">No REST endpoints found for your query.</p>
-                  ) : (
-                    <div className="space-y-4 max-h-[calc(100vh-400px)] overflow-y-auto">
-                      {methodOrder.filter(m => grouped[m]).map(method => (
-                        <details key={method} className="mb-4">
-                          <summary className="text-lg font-semibold text-purple-400 cursor-pointer">
-                            {method} ({grouped[method].length})
-                          </summary>
-                          <div className="mt-2">
-                            {grouped[method].map((ep, i) => (
-                              <div
-                                key={i}
-                                className="mb-5 border border-gray-700 rounded-lg p-4 bg-[#1a1a1a]/70 hover:bg-[#2a2a2a]/80 transition-colors"
-                              >
-                                <div className="flex items-center justify-between">
-                                  <span
-                                    className={`text-sm font-semibold px-2 py-1 rounded ${ep.method === "GET"
-                                      ? "bg-green-700 text-green-200"
-                                      : ep.method === "POST"
-                                        ? "bg-blue-700 text-blue-200"
-                                        : ep.method === "DELETE"
-                                          ? "bg-red-700 text-red-200"
-                                          : "bg-yellow-700 text-yellow-200"
-                                      }`}
-                                  >
-                                    {ep.method}
-                                  </span>
-                                  <code className="text-sm font-mono text-gray-100 ml-3">{ep.path}</code>
-                                </div>
-                                {ep.desc && <p className="mt-2 text-gray-300 text-sm">{ep.desc}</p>}
-                                {ep.params.length > 0 && (
-                                  <div className="mt-3">
-                                    <p className="text-gray-400 text-xs font-semibold mb-1">Parameters:</p>
-                                    <ul className="pl-4 list-disc text-gray-400 text-xs space-y-1">
-                                      {ep.params.slice(0, 10).map((p, idx) => (
-                                        <li key={idx}>{p}</li>
-                                      ))}
-                                      {ep.params.length > 10 && (
-                                        <li className="text-gray-500 italic">...and more</li>
-                                      )}
-                                    </ul>
+                    {loading ? (
+                      <p className="text-gray-400 italic">Fetching results...</p>
+                    ) : endpoints.length === 0 ? (
+                      <p className="text-gray-500 italic">No REST endpoints found for your query.</p>
+                    ) : (
+                      <div className="space-y-4 max-h-[calc(100vh-400px)] overflow-y-auto">
+                        {methodOrder.filter(m => grouped[m]).map(method => (
+                          <details key={method} className="mb-4">
+                            <summary className="text-lg font-semibold text-purple-400 cursor-pointer">
+                              {method} ({grouped[method].length})
+                            </summary>
+                            <div className="mt-2">
+                              {grouped[method].map((ep, i) => (
+                                <div
+                                  key={i}
+                                  className="mb-5 border border-gray-700 rounded-lg p-4 bg-[#1a1a1a]/70 hover:bg-[#2a2a2a]/80 transition-colors"
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <span
+                                      className={`text-sm font-semibold px-2 py-1 rounded ${ep.method === "GET"
+                                        ? "bg-green-700 text-green-200"
+                                        : ep.method === "POST"
+                                          ? "bg-blue-700 text-blue-200"
+                                          : ep.method === "DELETE"
+                                            ? "bg-red-700 text-red-200"
+                                            : "bg-yellow-700 text-yellow-200"
+                                        }`}
+                                    >
+                                      {ep.method}
+                                    </span>
+                                    <code className="text-sm font-mono text-gray-100 ml-3">{ep.path}</code>
                                   </div>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        </details>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                                  {ep.desc && <p className="mt-2 text-gray-300 text-sm">{ep.desc}</p>}
+                                  {ep.params.length > 0 && (
+                                    <div className="mt-3">
+                                      <p className="text-gray-400 text-xs font-semibold mb-1">Parameters:</p>
+                                      <ul className="pl-4 list-disc text-gray-400 text-xs space-y-1">
+                                        {ep.params.slice(0, 10).map((p, idx) => (
+                                          <li key={idx}>{p}</li>
+                                        ))}
+                                        {ep.params.length > 10 && (
+                                          <li className="text-gray-500 italic">...and more</li>
+                                        )}
+                                      </ul>
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </details>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Google Search Results Card */}
-                {googleResults.length > 0 && (
-                  <div className="text-left bg-[#1a1a1a]/70 p-6 rounded-lg border border-green-700 shadow-md">
+                {(googleLoading || googleResults.length > 0 || googleError) && (
+                  <div className="lg:col-span-2 text-left bg-[#1a1a1a]/70 p-6 rounded-lg border border-green-700 shadow-md">
                     <h2 className="font-bold text-lg mb-4 text-green-400">Google Search Results</h2>
-                    <ul className="space-y-3 max-h-[calc(100vh-400px)] overflow-y-auto">
-                      {googleResults.map((item, idx) => (
-                        <li key={idx} className="border border-gray-700 rounded p-3 bg-[#1a1a1a]/50 hover:bg-[#2a2a2a]/50 transition-colors">
-                          <a
-                            href={item.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-400 underline font-semibold line-clamp-2"
-                          >
-                            {item.title}
-                          </a>
-                          <div className="text-gray-400 text-sm mt-2 line-clamp-3">{item.snippet}</div>
-                        </li>
-                      ))}
-                    </ul>
+                    
+                    {googleLoading ? (
+                      <p className="text-gray-400 italic">Searching Google...</p>
+                    ) : googleError ? (
+                      <p className="text-red-400 italic">{googleError}</p>
+                    ) : googleResults.length > 0 ? (
+                      <ul className="space-y-3 max-h-[calc(100vh-400px)] overflow-y-auto">
+                        {googleResults.map((item, idx) => (
+                          <li key={idx} className="border border-gray-700 rounded p-3 bg-[#1a1a1a]/50 hover:bg-[#2a2a2a]/50 transition-colors">
+                            <a
+                              href={item.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-400 underline font-semibold line-clamp-2"
+                            >
+                              {item.title}
+                            </a>
+                            <div className="text-gray-400 text-sm mt-2 line-clamp-3">{item.snippet}</div>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
                   </div>
                 )}
               </div>

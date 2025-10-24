@@ -9,7 +9,17 @@ export async function POST(req: Request) {
     }
     
     console.log('📨 Search API received query:', query);
-    const results = await googleCustomSearch(query);
+    const items = await googleCustomSearch(query);
+    
+    // Transform Google API results to match UI expectations
+    const results = items.map((item: any) => ({
+      title: item.title,
+      snippet: item.snippet,
+      link: item.link,
+      displayLink: item.displayLink
+    }));
+    
+    console.log('✅ Transformed results:', results.length, 'items');
     
     return NextResponse.json({ 
       results,
