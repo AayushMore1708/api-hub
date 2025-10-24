@@ -1,11 +1,11 @@
 # **API Hub**
 A basic project with the following technologies :
-/1. ⁠Drizzle + PostgreSQL
-/2. ⁠RAG
-/3. Next JS  ⁠
+1. ⁠Drizzle + PostgreSQL
+2. ⁠RAG
+3. Next JS  ⁠
 4. React Testing Library
-/5. ⁠⁠TDD
-/-6. 2 ⁠OAuth Integrations + 2 API Key Integrations
+5. ⁠⁠TDD
+6. 2 ⁠OAuth Integrations + 2 API Key Integrations
 
 23/10 Updated Todos:
 1. Updated Readme
@@ -27,8 +27,5 @@ Api Key Integrations
 Google Custom Search API - to search on web - Done
 Gemini Api to format the api endpoints
 
-TBD
-postman api                 -   fetch collections for new APIs
-
-24/10
+24/10 Updated Todos:
 Use N8N free tier, create and connect that flow via API webhooks to project

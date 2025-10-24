@@ -8,18 +8,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing query" }, { status: 400 });
     }
     
-    console.log('📨 Search API received query:', query);
-    const items = await googleCustomSearch(query);
-    
-    // Transform Google API results to match UI expectations
-    const results = items.map((item: any) => ({
-      title: item.title,
-      snippet: item.snippet,
-      link: item.link,
-      displayLink: item.displayLink
-    }));
-    
-    console.log('✅ Transformed results:', results.length, 'items');
+    const results = await googleCustomSearch(query);
     
     return NextResponse.json({ 
       results,

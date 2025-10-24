@@ -83,7 +83,6 @@ async function seedDocs(library: string) {
       }
     });
 
-    console.log(`✅ Seeded ${library} docs (${chunks.length} chunks)`);
   } catch (err) {
     console.error("Seed error:", err);
   }

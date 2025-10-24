@@ -21,15 +21,12 @@ export async function googleCustomSearch(query: string) {
       num: 10, // Number of results
     };
     
-    console.log('🔍 Google Search query:', query);
     const response = await axios.get(url, { params });
     
     if (!response.data.items || response.data.items.length === 0) {
-      console.log('⚠️ No search results found');
       return [];
     }
     
-    console.log('✅ Found', response.data.items.length, 'search results');
     return response.data.items; // Array of search results
   } catch (error: any) {
     console.error('❌ Google Search API error:', error.response?.data || error.message);

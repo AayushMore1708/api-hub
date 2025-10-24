@@ -95,15 +95,6 @@ The project follows **Test-Driven Development (TDD)** using:
 * **Jest** for backend and API testing
 * **React Testing Library** for frontend component tests
 
-### **7. Clean, Modern UI**
-
-Built with **Next.js App Router** and **TailwindCSS**, featuring:
-
-* Search bar with autosuggestions
-* Endpoint list with filters (GET / POST / PUT / DELETE)
-* Chat-style AI assistant
-
----
 
 ## **Architecture**
 
@@ -145,7 +136,7 @@ Built with **Next.js App Router** and **TailwindCSS**, featuring:
 ### **Frontend**
 
 * Next.js 14 (App Router)
-* React 18
+* React 19
 * TailwindCSS – responsive, modern styling
 * React Testing Library + Jest – TDD for components
 
@@ -173,67 +164,5 @@ Built with **Next.js App Router** and **TailwindCSS**, featuring:
 * Jest – backend unit & integration tests
 * React Testing Library – frontend component tests
 * ESLint + Prettier – code quality and linting
-* Vercel – deployment (Next.js hosting)
-* Neon / Supabase / Railway – PostgreSQL hosting
 
 ---
-
-## **Example Use Case**
-
-1. The user logs in with Google or GitHub.
-2. Searches for: “Stripe API.”
-3. The system:
-
-   * Finds official docs via Google and GitHub.
-   * Parses endpoints like `/v1/charges`, `/v1/customers`.
-   * Stores them in PostgreSQL.
-   * Generates embeddings via Gemini.
-4. The user asks: “How do I refund a charge?”
-
-   * RAG retrieves the relevant section (`POST /v1/refunds`).
-   * Gemini responds:
-     “To refund a charge, send a POST request to `/v1/refunds` with the `charge` parameter and optional `amount`.”
-
----
-
-## **Database Schema (Simplified)**
-
-| Table             | Columns                                                       | Description              |
-| ----------------- | ------------------------------------------------------------- | ------------------------ |
-| **users**         | id, name, email, provider                                     | Authenticated users      |
-| **api_docs**      | id, library, source, url, content, vector                     | Parsed documentation     |
-| **api_endpoints** | id, api_doc_id, path, method, parameters, description, vector | Individual endpoint data |
-| **queries**       | id, user_id, question, response                               | Q&A logs                 |
-
----
-
-## **Testing Examples**
-
-* **searchAPI.test.ts** → validates GitHub + Google API calls return correct URLs
-* **parseDocs.test.ts** → checks endpoint extraction accuracy
-* **ragQuery.test.ts** → verifies RAG + Gemini pipeline returns relevant context
-* **SearchBar.test.tsx** → ensures frontend search behaves correctly
-
----
-
-## **Future Enhancements**
-
-* SDK Analysis – extract functions from npm packages
-* Auto Code Samples – Gemini generates curl, Python, or Node.js examples
-* Compare APIs – “Compare Stripe vs Razorpay”
-* Rate Limit Tracking – fetch and display per-endpoint rate limits
-* Periodic Doc Updates – scheduled re-parsing for freshness
-
----
-
-## **Why This Project Stands Out**
-
-* Combines web-scale search, structured API parsing, and AI understanding
-* Real-world use of RAG architecture with Gemini embeddings
-* True full-stack implementation (Next.js backend + frontend)
-* Solid software engineering: typed ORM, TDD, OAuth, API integrations
-* A genuinely useful and technically robust developer tool
-
----
-
-

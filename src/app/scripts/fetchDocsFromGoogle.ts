@@ -8,12 +8,10 @@ import { db } from "@/index";
 
 
 export async function fetchDocsFromGoogle(library: string, maxChunks?: number) {
-  console.log(`🔎 Searching Google for ${library} API specs...`);
   const query = `${library} openapi OR swagger filetype:yaml OR filetype:json`;
   const results = await googleCustomSearch(query);
 
   if (!results || results.length === 0) {
-    console.log(`No results found for ${library} on Google`);
     return;
   }
 

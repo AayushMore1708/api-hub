@@ -50,16 +50,12 @@ const OFFICIAL_SPECS: Record<string, string[]> = {
 async function fetchOfficialDocs(library: string, maxChunks?: number) {
   const urls = OFFICIAL_SPECS[library];
   if (!urls || urls.length === 0) {
-    console.log(`No official specs defined for ${library}`);
     return;
   }
 
-  console.log(`Fetching official docs for ${library}...`);
   for (const url of urls) {
-    console.log(`  Fetching: ${url}`);
     const fileText = await fetchRawFile(url);
     if (!fileText) {
-      console.log(`  ❌ Failed to fetch ${url}`);
       continue;
     }
 
@@ -77,11 +73,9 @@ async function fetchOfficialDocs(library: string, maxChunks?: number) {
 
     let chunks = chunkText(parsed);
     if (maxChunks && chunks.length > maxChunks) {
-      console.log(`  ⚡ Quick mode: Limiting to first ${maxChunks} chunks (out of ${chunks.length})`);
       chunks = chunks.slice(0, maxChunks);
     }
 
-    console.log(`  Processing ${chunks.length} chunks with parallel processing...`);
     const limit = pLimit(10);
     let processed = 0;
 
@@ -99,7 +93,6 @@ async function fetchOfficialDocs(library: string, maxChunks?: number) {
             });
             processed++;
             if (processed % 50 === 0) {
-              console.log(`    Processed ${processed}/${chunks.length} chunks`);
             }
           } catch (err: any) {
             console.error(`  ⚠️  Error processing chunk ${i + 1}:`, err.message);
@@ -107,12 +100,10 @@ async function fetchOfficialDocs(library: string, maxChunks?: number) {
         })
       )
     );
-    console.log(`  ✅ Completed ${url} - ${processed}/${chunks.length} chunks processed`);
   }
 }
 
 async function fetchDocsFromGitHub(library: string) {
-  console.log(`Searching GitHub for ${library} API specs...`);
   const githubSearch = await fetch(
     `https://api.github.com/search/code?q=openapi+${library}+in:file+filename:openapi.yaml+filename:swagger.yaml+filename:spec.yaml+extension:yaml+extension:json`,
     {
@@ -168,7 +159,6 @@ async function fetchDocsFromGitHub(library: string) {
   );
 }
 
-console.log("🚀 Starting API documentation fetch...\n");
 
 const args = process.argv.slice(2);
 const quickMode = args.includes("--quick");
@@ -176,11 +166,9 @@ const library = args.find(arg => !arg.startsWith("--"));
 const maxChunks = quickMode ? 50 : undefined;
 
 if (quickMode) {
-  console.log("⚡ Quick mode: Processing first 50 chunks only per API\n");
 }
 
 if (library && OFFICIAL_SPECS[library]) {
-  console.log(`📚 Fetching only: ${library}\n`);
   await fetchOfficialDocs(library, maxChunks);
 } else {
   await fetchOfficialDocs("stripe", maxChunks);
@@ -189,4 +177,3 @@ if (library && OFFICIAL_SPECS[library]) {
   await fetchOfficialDocs("github", maxChunks);
 }
 
-console.log("\n✅ All documentation fetched successfully!");
