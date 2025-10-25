@@ -142,9 +142,10 @@ The project follows **Test-Driven Development (TDD)** using:
 
 
 Testing Commands
-bunx jest __tests__/apiService.tsx
-bunx jest PopularRepos.api.tsx
-bunx jest googleCustomSearch.test.ts
+bunx vitest run fetchReposFromAPI.test.ts
+bunx vitest run postmanRoute.test.ts
+bunx vitest run queryRoute.test.ts
+
 
 DB Commands :
 

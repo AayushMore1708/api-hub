@@ -26,6 +26,9 @@
         "src/components/*"
       ]
     },
+     "types": [
+      "vitest/globals"
+    ],
     "plugins": [
       {
         "name": "next"

@@ -16,22 +16,41 @@ export function chunkText(text: string, size = 10000) {
   return chunks;
 }
 
-const OFFICIAL_SPECS: Record<string, string[]> = {
+const OFFICIAL_SPECS: Record<string,string[]> = {
   stripe: [
-    "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.yaml",
+    "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.yaml"
   ],
   openai: [
-    "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
+    "https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml"
   ],
   github: [
-    "https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.yaml",
+    "https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.yaml"
   ],
   twilio: [
-    "https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/yaml/twilio_api_v2010.yaml",
+    "https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/yaml/twilio_api_v2010.yaml"
+  ],
+  companyinfo: [
+    "https://console.openapi.com/oas/en/company.openapi.json"
+  ],
+  microsoft_graph: [
+    "https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/openapi/v1.0/openapi.yaml"
+  ],
+  slack: [
+    "https://raw.githubusercontent.com/slackapi/slack-api-specs/main/openapi/slack_web_openapi_v2.json"
+  ],
+  paypal: [
+    "https://raw.githubusercontent.com/paypal/api-openapi/gh-pages/v1/paypal_v1_openapi.yaml"
+  ],
+  sendgrid: [
+    "https://raw.githubusercontent.com/sendgrid/api-specification/main/v3/swagger.json"
+  ],
+  aws_s3: [
+    "https://raw.githubusercontent.com/aws-docs/aws-sdk-apis/main/apis/s3/2014-11-06/swagger.json"
   ],
 };
 
- export async function fetchRawFile(url: string): Promise<string | null> {
+
+export async function fetchRawFile(url: string): Promise<string | null> {
   try {
     const res = await fetch(url, {
       timeout: 30000,
@@ -137,7 +156,7 @@ async function fetchDocsFromGitHub(library: string) {
           } else if (htmlUrl.endsWith(".json")) {
             parsed = JSON.stringify(JSON.parse(fileText), null, 2);
           }
-        } catch {}
+        } catch { }
 
         const chunks = chunkText(parsed);
         for (const chunk of chunks) {
@@ -151,7 +170,7 @@ async function fetchDocsFromGitHub(library: string) {
               vector: embedding.embedding.values,
             });
           } catch (err: any) {
-            if (err.message?.includes("payload size exceeds")) {}
+            if (err.message?.includes("payload size exceeds")) { }
           }
         }
       })
