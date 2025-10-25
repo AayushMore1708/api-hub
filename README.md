@@ -142,13 +142,15 @@ The project follows **Test-Driven Development (TDD)** using:
 
 
 Testing Commands
+Backend
 bunx vitest run fetchReposFromAPI.test.ts
 bunx vitest run postmanRoute.test.ts
 bunx vitest run queryRoute.test.ts
 
+Frontend
+bun test SearchBar.test.tsx
 
 DB Commands :
-
 To push the changes to schema
 bunx drizzle-kit push
 

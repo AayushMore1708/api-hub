@@ -45,7 +45,7 @@ export default function Search() {
     setGoogleLoading(true);
     setGoogleResults([]);
     setGoogleError("");
-    setHasSearched(true); // Add this line to show the results section
+    setHasSearched(true);
 
     try {
       const searchQuery = `${query} api endpoints official`;
@@ -107,7 +107,6 @@ export default function Search() {
           if (currentPath) {
             endpoints.push({ method, path: currentPath, desc: currentDesc, params: currentParams });
           }
-          // Match both with and without backticks
           const pathMatch = line.match(/\*\*Path:\*\*\s*`?([^`\n]+)`?/) ||
             line.match(/\*\*Path:\*\*\s*(.+)/);
           currentPath = pathMatch ? pathMatch[1].trim() : '';

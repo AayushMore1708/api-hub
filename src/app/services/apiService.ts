@@ -11,10 +11,8 @@ const embedCache: Record<string, number[]> = {};
 
 export async function getEmbedding(text: string): Promise<number[]> {
   if (embedCache[text]) {
-    console.log("🧠 [Cache hit] Using existing embedding for query.");
     return embedCache[text];
   }
-  console.log("🧩 Generating embedding for query...");
   const res = await embedModel.embedContent(text);
   embedCache[text] = res.embedding.values;
   return embedCache[text];
@@ -28,13 +26,11 @@ export function cosineSimilarity(a: number[], b: number[]) {
 }
 
 export async function searchDocs(query: string, library?: string) {
-  console.log(`🔍 Searching docs for query: "${query}"`);
   const queryVector = await getEmbedding(query);
   const allRows = await db
     .select()
     .from(api_docs)
     .where(library ? sql`library = ${library}` : sql`TRUE`);
-  console.log(`📦 Found ${allRows.length} docs in DB for ${library || "all libraries"}.`);
   const rows = (allRows as any[])
     .map(r => ({
       ...r,
@@ -42,13 +38,10 @@ export async function searchDocs(query: string, library?: string) {
     }))
     .sort((a, b) => a.distance - b.distance)
     .slice(0, 8);
-  console.log(`✅ Selected ${rows.length} closest matches.`);
   return rows;
 }
 
 export async function generateAnswer(query: string, context: string, library?: string) {
-  console.log(`🗣️ Generating answer for "${query}"`);
-  console.log(`📚 Context length: ${context.length.toLocaleString()} characters`);
   const prompt = `You are an API documentation extractor.
 From the OpenAPI specification paths context below, extract and output all REST API endpoints grouped by HTTP method in markdown format.
 
@@ -65,6 +58,5 @@ ${context}
 Question: ${query}`;
   const result = await chatModel.generateContent(prompt);
   const answer = result.response.text();
-  console.log(`🧾 Model response length: ${answer.length.toLocaleString()} characters`);
   return answer;
 }

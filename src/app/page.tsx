@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Homepage from "../components/ui/homepage";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
-import { fetchReposFromAPI } from "./services/apiService";
+import { getPopularRepos } from "@/app/services/repoService";
 import { useSession } from 'next-auth/react';
 
 
@@ -35,7 +35,7 @@ export default function Home() {
     const fetchRepos = async () => {
       setLoading(true);
       try {
-        const data = await fetchReposFromAPI(page);
+        const data = await getPopularRepos(page);
         setRepos(data);
         setLastPage(page);
       } catch (error) {
